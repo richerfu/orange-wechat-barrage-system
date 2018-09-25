@@ -1,0 +1,30 @@
+{
+  "name": "wechatbarrage",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.3",
+    "crypto": "^1.0.1",
+    "debug": "^3.1.0",
+    "ejs": "~2.5.7",
+    "express": "~4.16.0",
+    "express-mysql-session": "^2.0.1",
+    "express-session": "^1.15.6",
+    "http-errors": "^1.7.0",
+    "moment": "^2.22.2",
+    "morgan": "~1.9.0",
+    "mysql": "^2.16.0",
+    "mysql2": "^1.6.1",
+    "redis": "^2.8.0",
+    "sequelize": "^4.38.0",
+    "socket.io": "^2.1.1",
+    "socket.io-emitter": "^3.1.1",
+    "socket.io-redis": "^5.2.0",
+    "unique-string": "^1.0.0",
+    "uuid": "^3.3.2",
+    "xml2js": "^0.4.19"
+  }
+}

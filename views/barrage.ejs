@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="/javascripts/jquery.danmu.min.js"></script>
+    <!--jquery.danmu.js (//github.com/chiruom/danmu/) - Licensed under the MIT license-->
+  </head>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    html{
+      width: 100%;
+      height: 100%;
+    }
+    body{
+      height: 100%;
+      margin: 0;
+    }
+    #danmu{
+      height: 100%;
+      width: 100%;
+    }
+    #father{
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+  <body>
+  <div id="father">
+    <div id="danmu"></div>
+  </div>
+  <!--<button type="button" onclick="zanting()">暂停</button>-->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        function bg3(){
+            var r=Math.floor(Math.random()*256);
+            var g=Math.floor(Math.random()*256);
+            var b=Math.floor(Math.random()*256);
+            return "rgb("+r+','+g+','+b+")";//所有方法的拼接都可以用ES6新特性`其他字符串{$变量名}`替换
+        }
+
+      $('body').css('margin','0');
+      $('body').css('padding','0');
+      var width = document.body.scrollWidth;
+      var height = document.body.scrollHeight-$('#father').scrollTop;
+      $("#danmu").danmu({
+            height: height,
+            width: width,
+            zindex :100,   //弹幕区域z-index属性
+            speed:7000,      //滚动弹幕的默认速度，这是数值值得是弹幕滚过每672像素所需要的时间（毫秒）
+            sumTime:65535,   //弹幕流的总时间
+            danmuLoop:true,   //是否循环播放弹幕
+            defaultFontColor:"#FFFFFF",   //弹幕的默认颜色
+            fontSizeSmall:24,     //小弹幕的字号大小
+            FontSizeBig:32,       //大弹幕的字号大小
+            opacity:"0.9",			//默认弹幕透明度
+            topBottonDanmuTime:6000,   // 顶部底部弹幕持续时间（毫秒）
+            SubtitleProtection:true,     //是否字幕保护
+            positionOptimize:false,         //是否位置优化，位置优化是指像AB站那样弹幕主要漂浮于区域上半部分
+
+            maxCountInScreen: 40000,   //屏幕上的最大的显示弹幕数目,弹幕数量过多时,优先加载最新的。
+            maxCountPerSec: 10000      //每分秒钟最多的弹幕数目,弹幕数量过多时,优先加载最新的。
+        });
+
+        // $("#danmu").danmu("addDanmu",[
+        //     { text:"这是滚动弹幕" ,color:"white",size:1,position:0,time:2}
+        //     ,{ text:"这是顶部弹幕" ,color:"yellow" ,size:1,position:1,time:3}
+        //     ,{ text:"这是底部弹幕" , color:"red" ,size:1,position:2,time:3}
+        // ])
+
+        $('#danmu').danmu('danmuStart');
+
+      // $("#danmu").danmu("addDanmu",[
+      //     { text:"这是滚动弹幕" ,color:"white",size:1,position:0,time:2}
+      //     ,{ text:"这是顶部弹幕" ,color:"yellow" ,size:1,position:1,time:3}
+      //     ,{ text:"这是底部弹幕" , color:"red" ,size:1,position:2,time:3}
+      // ])
+      function zanting() {
+          $('#danmu').danmu('danmuPause');
+      }
+      var socket = io.connect('http://localhost');
+      socket.on('news', function (data) {
+          console.log(data.data);
+          var time = $('#danmu').data("nowTime") +1;
+          var color = bg3(),size = '1';
+          // var position = Math.floor(Math.random()*3);
+          var position = '0';
+          var text_obj = '{ text:"' + data.data + '",color:"' + color + '",size:"' + size + '",position:"' + position + '",time:' + time + '}';   //构造加上了innew属性的字符串danmu对象
+          var new_obj = eval('(' + text_obj + ')');
+          $("#danmu").danmu("addDanmu",new_obj);
+          socket.emit('my other event', { my: 'data' });
+      });
+    </script>
+  </body>
+</html>

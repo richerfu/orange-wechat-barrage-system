@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>Orange WeChat Barrage System Login</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <link rel="stylesheet" href="assets/css/amazeui.min.css"/>
+  <style>
+    .header {
+      text-align: center;
+    }
+    .header h1 {
+      font-size: 200%;
+      color: #333;
+      margin-top: 30px;
+    }
+    .header p {
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+<div class="header">
+  <div class="am-g">
+    <h1>Orange WeChat Barrage System</h1>
+    <!--<p>Integrated Development Environment<br/>代码编辑，代码生成，界面设计，调试，编译</p>-->
+  </div>
+  <hr />
+</div>
+<div class="am-g">
+  <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
+    <br>
+    <br>
+
+    <div class="am-form">
+      <label for="text">登录名:</label>
+      <input type="text" name="name" id="name" value="">
+      <br>
+      <label for="password">密码:</label>
+      <input type="password" name="pwd" id="password" value="">
+      <br>
+      <br />
+      <div class="am-cf">
+        <input type="submit" name="" onclick="login()" value="登 录" class="am-btn am-btn-primary am-btn-sm am-fl">
+        <!--<input type="submit" name="" value="忘记密码 ^_^? " class="am-btn am-btn-default am-btn-sm am-fr">-->
+      </div>
+    </div>
+    <hr>
+    <!--<p>© 2014 AllMobilize, Inc. Licensed under MIT license.</p>-->
+  </div>
+</div>
+<script src="javascripts/jquery.min.js"></script>
+<script>
+  function login() {
+      var username = $('#name').val();
+      var pwd = $('#password').val();
+      var data = {
+          username: username,
+          pwd: pwd
+      }
+      $.ajax({
+          url:'/login',
+          type:'post',
+          dataType:'json',
+          data: data,
+          success:function (res) {
+              // console.log(res);
+              // alert(res.msg);
+              if(res.msg == 'ok'){
+                  window.location.href = '/barrage/'+res.username;
+              }else{
+                  alert(res.msg);
+              }
+          },
+          error:function (e) {
+              console.log(e);
+          }
+      })
+  }
+</script>
+</body>
+</html>
